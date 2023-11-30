@@ -46,7 +46,18 @@ namespace VMS.Error
             {
                 //Return customer 401 result
 
-                var Rq = context.HttpContext.Request.Headers["Authorization"].ToString().Split(" ");
+                var RqString = "";
+                if (context.HttpContext.Request.Headers["Authorization"].ToString().IndexOf(" ") == -1)
+                {
+                    RqString = "Bearer " + context.HttpContext.Request.Headers["Authorization"].ToString();
+                }
+                else
+                {
+                    RqString = context.HttpContext.Request.Headers["Authorization"].ToString();
+                }
+
+                //var Rq = context.HttpContext.Request.Headers["Authorization"].ToString().Split(" ");
+                var Rq = RqString.Split(" ");
                 var Rs = _helpers.GetPolicy(Rq[1].ToString()).ConfigureAwait(false).GetAwaiter().GetResult();
                 if (Rs.Status)
                 { return; }

@@ -247,7 +247,8 @@ namespace VMS.Services
 
 
                 var Rs = "N/A";
-
+                var TickTime = long.Parse(DataToken.Claims.Where(w => w.Type == "exp").FirstOrDefault().Value);
+                var ExpDate = DateTimeOffset.FromUnixTimeSeconds(TickTime).LocalDateTime;
 
 
                 if (DataToken.Claims.Where(w => w.Type == "userId").FirstOrDefault() != null)
@@ -267,10 +268,11 @@ namespace VMS.Services
                 {
                     CurrentUser=Rs,
                     Token=Token,
-                    ValidTo=DataToken.ValidTo.ToFormatIDStringDate(),
+                    //ValidTo=DataToken.ValidTo.ToFormatIDStringDate(),
+                    ValidTo= ExpDate.ToFormatIDStringDate(),
                 };
 
-                if (DataToken.ValidTo <= DateTime.Now) 
+                if (ExpDate >= DateTime.Now) 
                 {
                     return (true, null, DataRs);
                 } 

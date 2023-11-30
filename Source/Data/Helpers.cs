@@ -222,16 +222,24 @@ namespace VMS.Data
         {
             if (value == null) return "";
             return value.Value.ToString(
-                "dd MMMM yyyy HH:mm:ss",
-                new System.Globalization.CultureInfo("id-ID"));
+                "dd MMMM yyyy HH:mm:ss");
         }
         public static string ToFormatIDStringDate(this DateTime value)
         {
             return value.ToString(
-                "dd MMMM yyyy HH:mm:ss",
-                new System.Globalization.CultureInfo("id-ID"));
+                "dd MMMM yyyy HH:mm:ss");
         }
-
+        public static string ToFormatIDStringDateShort(this DateTime? value)
+        {
+            if (value == null) return "";
+            return value.Value.ToString(
+                "dd/MM/yyyy");
+        }
+        public static string ToFormatIDStringDateShort(this DateTime value)
+        {
+            return value.ToString(
+                "dd/MM/yyyy");
+        }
         public static string ToFormatUSStringDate(this DateTime? value)
         {
             if (value == null) return "";
@@ -245,32 +253,17 @@ namespace VMS.Data
                 "yyyy/MM/dd HH:mm:ss",
                 new System.Globalization.CultureInfo("es-ES"));
         }
-
-        public static string ToFormatIDStringDateShort(this DateTime? value)
-        {
-            if (value == null) return "";
-            return value.Value.ToString(
-                "dd-MM-yyyy",
-                new System.Globalization.CultureInfo("id-ID"));
-        }
-        public static string ToFormatIDStringDateShort(this DateTime value)
-        {
-            return value.ToString(
-                "dd-MM-yyyy",
-                new System.Globalization.CultureInfo("id-ID"));
-        }
-
         public static string ToFormatUSStringDateShort(this DateTime? value)
         {
             if (value == null) return "";
             return value.Value.ToString(
-                "yyyy-MM-dd",
+                "yyyy/MM/dd",
                 new System.Globalization.CultureInfo("es-ES"));
         }
         public static string ToFormatUSStringDateShort(this DateTime value)
         {
             return value.ToString(
-                "yyyy-MM-dd",
+                "yyyy/MM/dd",
                 new System.Globalization.CultureInfo("es-ES"));
         }
 
