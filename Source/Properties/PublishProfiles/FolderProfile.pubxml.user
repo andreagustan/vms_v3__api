@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Pertamina\source\Publis\API\sso</_PublishTargetUrl>
+    <History>True|2023-11-03T09:08:42.2968509Z;True|2023-11-03T16:07:57.7622545+07:00;True|2023-11-03T10:18:23.7233422+07:00;True|2023-11-03T10:17:41.4326989+07:00;True|2023-11-02T15:53:48.5440063+07:00;True|2023-11-02T15:53:05.4880657+07:00;True|2023-11-02T15:52:27.1802348+07:00;True|2023-11-02T12:46:33.3950592+07:00;True|2023-11-02T12:44:57.3969190+07:00;False|2023-11-02T12:44:35.0250113+07:00;True|2023-11-02T12:15:20.4327664+07:00;</History>
+  </PropertyGroup>
+</Project>

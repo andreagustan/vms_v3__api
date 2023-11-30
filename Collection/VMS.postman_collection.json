@@ -1,0 +1,1049 @@
+{
+	"info": {
+		"_postman_id": "860ec71b-2261-422b-a6ff-2a61f77fb203",
+		"name": "VMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1837646"
+	},
+	"item": [
+		{
+			"name": "CustomerDetail",
+			"item": [
+				{
+					"name": "ListPage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"pageParm\": {\r\n    \"keyword\": null,\r\n    \"fields\": null,\r\n    \"pageSize\": null,\r\n    \"pageNumber\": null\r\n  },\r\n  \"parm\": {\r\n    \"customerID\": null,\r\n    \"customerName\": null,\r\n    \"subCustomerID\": null,\r\n    \"subCustomerName\": null\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/CustomerDetail/ListPage?request={\"limit\":50,\"offset\":50}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"CustomerDetail",
+								"ListPage"
+							],
+							"query": [
+								{
+									"key": "request",
+									"value": "{\"limit\":50,\"offset\":50}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListPageExt",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\":\"All\",\r\n  \"pageNumber\": null,\r\n  \"jsonFilter\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/CustomerDetail/ListPageExt?request={\"limit\":50,\"offset\":50}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"CustomerDetail",
+								"ListPageExt"
+							],
+							"query": [
+								{
+									"key": "request",
+									"value": "{\"limit\":50,\"offset\":50}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/CustomerDetail/GetById/1",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"CustomerDetail",
+								"GetById",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByIdExt",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/CustomerDetail/GetByIdExt/1",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"CustomerDetail",
+								"GetByIdExt",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BulkMany",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 1,\r\n    \"customerID\": \"CRM2017030035\",\r\n    \"customerName\": \"PERTAMINA RETAIL, PT - EVENT (PELUMAS)\",\r\n    \"subCustomerID\": \"1512521513\",\r\n    \"subCustomerName\": \"test sub ptpr\",\r\n    \"flagData\": \"Edit\"\r\n  },\r\n  {\r\n    \"id\": 2,\r\n    \"customerID\": \"CRM2017030035\",\r\n    \"customerName\": \"PERTAMINA RETAIL, PT - EVENT (PELUMAS)\",\r\n    \"subCustomerID\": \"1512521513\",\r\n    \"subCustomerName\": \"test sub ptpr edit\",\r\n    \"flagData\": \"Delete\"\r\n  },\r\n  {\r\n    \"id\": 0,\r\n    \"customerID\": \"aaaa\",\r\n    \"customerName\": \"aaaa\",\r\n    \"subCustomerID\": \"aaaa\",\r\n    \"subCustomerName\": \"aaaa\",\r\n    \"flagData\": \"Add\"\r\n  }\r\n]"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/CustomerDetail/BulkMany",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"CustomerDetail",
+								"BulkMany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"customerID\": \"bbbb\",\r\n  \"customerName\": \"bbbb\",\r\n  \"subCustomerID\": \"bbbb\",\r\n  \"subCustomerName\": \"bbbb\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/CustomerDetail/Add",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"CustomerDetail",
+								"Add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 3,\r\n  \"customerID\": \"cccc\",\r\n  \"customerName\": \"cccc\",\r\n  \"subCustomerID\": \"cccc\",\r\n  \"subCustomerName\": \"cccc\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/CustomerDetail/Edit",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"CustomerDetail",
+								"Edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/CustomerDetail/Delete/3",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"CustomerDetail",
+								"Delete",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PriceListVoucer",
+			"item": [
+				{
+					"name": "ListPage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyHeader\":null,\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\": 2,\r\n  \"pageNumber\": 2,\r\n  \"jsonFilter\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/ListPage?request={\"limit\":50,\"offset\":50}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"ListPage"
+							],
+							"query": [
+								{
+									"key": "request",
+									"value": "{\"limit\":50,\"offset\":50}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListPageExt",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyHeader\":null,\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\": 2,\r\n  \"pageNumber\": 2,\r\n  \"jsonFilter\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/ListPageExt?request={\"limit\":50,\"offset\":50}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"ListPageExt"
+							],
+							"query": [
+								{
+									"key": "request",
+									"value": "{\"limit\":50,\"offset\":50}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPrice_1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyHeader\": null,\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\": null,\r\n  \"pageNumber\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/GetPrice/PP0022/21201001/500",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"GetPrice",
+								"PP0022",
+								"21201001",
+								"500"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPriceQs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							},
+							{
+								"key": "SupplierID",
+								"value": "PP0022",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "ItemID",
+								"value": "21201001",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Qty",
+								"value": "500",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyHeader\": null,\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\": null,\r\n  \"pageNumber\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/GetPrice/?SupplierID=PP0022&ItemID=21201001&Qty=500",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"GetPrice",
+								""
+							],
+							"query": [
+								{
+									"key": "SupplierID",
+									"value": "PP0022"
+								},
+								{
+									"key": "ItemID",
+									"value": "21201001"
+								},
+								{
+									"key": "Qty",
+									"value": "500"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\": null,\r\n  \"pageNumber\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/GetById/1",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"GetById",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByIdExt",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\": null,\r\n  \"pageNumber\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/GetByIdExt/1",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"GetByIdExt",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BulkMany",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 0,\r\n    \"supplierID\": \"bbbb\",\r\n    \"itemID\": \"bbbb\",\r\n    \"beginQty\": 1,\r\n    \"endQty\": 100,\r\n    \"price\": 500.58,\r\n    \"flagData\": \"Add\"\r\n  },\r\n  {\r\n    \"id\": 7,\r\n    \"supplierID\": \"PP0021\",\r\n    \"itemID\": \"21201001\",\r\n    \"beginQty\": 2501,\r\n    \"endQty\": 3000,\r\n    \"price\": 1500.123,\r\n    \"flagData\": \"Edit\"\r\n  },\r\n  {\r\n    \"id\": 3,\r\n    \"supplierID\": \"PP0021\",\r\n    \"itemID\": \"21201001\",\r\n    \"beginQty\": 1,\r\n    \"endQty\": 1000,\r\n    \"price\": 2000,\r\n    \"flagData\": \"Delete\"\r\n  }\r\n]"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/BulkMany",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"BulkMany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"supplierID\": \"aaaa\",\r\n  \"itemID\": \"aaaa\",\r\n  \"beginQty\": 1,\r\n  \"endQty\": 100,\r\n  \"price\": 200.50\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/Add",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"Add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 8,\r\n  \"supplierID\": \"aaaa\",\r\n  \"itemID\": \"aaaa\",\r\n  \"beginQty\": 1,\r\n  \"endQty\": 1000,\r\n  \"price\": 200.55\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/Edit",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"Edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/PriceListVoucher/Delete/8",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"PriceListVoucher",
+								"Delete",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "VoucerDetail",
+			"item": [
+				{
+					"name": "ListPage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\":null,\r\n  \"pageNumber\": null,\r\n  \"jsonFilter\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/VoucherDetail/ListPage?request={\"limit\":50,\"offset\":50}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"VoucherDetail",
+								"ListPage"
+							],
+							"query": [
+								{
+									"key": "request",
+									"value": "{\"limit\":50,\"offset\":50}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListPageExt",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\":null,\r\n  \"pageNumber\": null,\r\n  \"jsonFilter\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/VoucherDetail/ListPageExt?request={\"limit\":50,\"offset\":50}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"VoucherDetail",
+								"ListPageExt"
+							],
+							"query": [
+								{
+									"key": "request",
+									"value": "{\"limit\":50,\"offset\":50}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\": null,\r\n  \"pageNumber\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/VoucherDetail/GetById/10",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"VoucherDetail",
+								"GetById",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByIdExt",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"keyword\": null,\r\n  \"fields\": null,\r\n  \"pageSize\": null,\r\n  \"pageNumber\": null\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/VoucherDetail/GetByIdExt/10",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"VoucherDetail",
+								"GetByIdExt",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"refId\": \"bbbb\",\r\n  \"itemID\": \"bbbb\",\r\n  \"startNo\": \"bbbb\",\r\n  \"endNo\": \"bbbb\",\r\n  \"expDateVoucher\": \"2023-11-18\",\r\n  \"qty\": 20,\r\n  \"sources\": \"bbbb\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/VoucherDetail/Add",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"VoucherDetail",
+								"Add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 11,\r\n  \"refId\": \"bbbb\",\r\n  \"itemID\": \"bbbb\",\r\n  \"startNo\": \"bbbb\",\r\n  \"endNo\": \"bbbb\",\r\n  \"expDateVoucher\": \"2023-11-18\",\r\n  \"qty\": 20,\r\n  \"sources\": \"bbbb\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/VoucherDetail/Edit",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"VoucherDetail",
+								"Edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/VoucherDetail/Delete/11",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"VoucherDetail",
+								"Delete",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BulkMany",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{Token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"id\": 0,\r\n    \"refId\": \"cccc\",\r\n    \"itemID\": \"cccc\",\r\n    \"startNo\": \"cccc\",\r\n    \"endNo\": \"cccc\",\r\n    \"expDateVoucher\": \"2023-11-18\",\r\n    \"qty\": 20,\r\n    \"sources\": \"cccc\",\r\n    \"FlagData\":\"Add\"\r\n  },\r\n  {\r\n    \"id\": 11,\r\n    \"refId\": \"aaaa\",\r\n    \"itemID\": \"aaaa\",\r\n    \"startNo\": \"aaaa\",\r\n    \"endNo\": \"aaaa\",\r\n    \"expDateVoucher\": \"2023-11-18\",\r\n    \"qty\": 20,\r\n    \"sources\": \"aaaa\",\r\n    \"FlagData\":\"Edit\"\r\n  },\r\n  {\r\n    \"id\": 10,\r\n    \"refId\": \"HO-PO-230100002\",\r\n    \"itemID\": \"00100537\",\r\n    \"startNo\": \"vms2300101bcda\",\r\n    \"endNo\": \"vms2300800bcda\",\r\n    \"expDateVoucher\": \"2023-10-01\",\r\n    \"qty\": 700,\r\n    \"sources\": null,\r\n    \"FlagData\":\"Delete\"\r\n  }\r\n]"
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/VoucherDetail/BulkMany",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"VoucherDetail",
+								"BulkMany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"pm.environment.set('Token', response.data.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userId\": \"umar.indocyber\",\r\n  \"password\": \"user@default\"\r\n}"
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/Users/authenticate",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"Users",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get UserId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"pm.environment.set('Token', response.data.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BaseUrl}}/Users/GetUserId",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"Users",
+						"GetUserId"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
