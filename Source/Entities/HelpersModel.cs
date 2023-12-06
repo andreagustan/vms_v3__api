@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace VMS.Entities
 {
@@ -83,6 +84,17 @@ namespace VMS.Entities
         public string PageSize { get; set; }
         public string PageNumber { get; set; }
         public string JSONFilter { get; set; }
+    }
+
+    public class ListPageExt 
+    {
+        public string Search { get; set; }
+        public int? Page { get; set; }
+        public int? Size { get; set; }
+        public string OrderBy { get; set; }
+        [Required]
+        public string UserId { get; set; }
+        public string request { get; set; }
     }
 
     public class ListPageDetail

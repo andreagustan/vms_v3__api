@@ -241,6 +241,7 @@ namespace VMS.Services
         {
             try
             {
+                if(string.IsNullOrEmpty(Token) || Token=="null") return (false, "Token is empty.", new TokenExt());
                 var handler = new JwtSecurityTokenHandler();
                 //var data = handler.ReadJwtToken(Token).Claims;
                 var DataToken = handler.ReadJwtToken(Token) as JwtSecurityToken;

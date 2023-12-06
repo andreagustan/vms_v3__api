@@ -187,6 +187,10 @@ namespace VMS
             //Add new service
             #region Add New Services
             services.AddScoped<IUserService, UsersServices>();
+            services.AddScoped<ICustomer, CustomerServices>();
+            services.AddScoped<ISupplier, SupplierServices>();
+            services.AddScoped<ISalesman, SalesmanServices>();
+            services.AddScoped<IUserBranch, UserBranchServices>();
             services.AddScoped<ICustomerDetail, CustomerDetailServices>();
             services.AddScoped<IVoucherDetail, VoucherDetailServices>();
             services.AddScoped<IPriceListVoucher, PriceListVoucherServices>();
