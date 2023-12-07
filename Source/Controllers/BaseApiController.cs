@@ -36,7 +36,7 @@ namespace VMS.Controllers
                     var Rq = HttpContext.Request.Headers["Authorization"].ToString().Split(" ");
                     var Ihelpers = HttpContext.RequestServices.GetRequiredService<IHelpers>();
 
-                    var Rs = Ihelpers.GetPolicy(Rq[1].ToString()).ConfigureAwait(false).GetAwaiter().GetResult();
+                    var Rs = Ihelpers.GetPolicy(Rq[Rq.Count()-1].ToString()).ConfigureAwait(false).GetAwaiter().GetResult();
                     if (!string.IsNullOrEmpty(Rs.Data.CurrentUser))
                     {
                         CurrentUserId = Rs.Data.CurrentUser;
