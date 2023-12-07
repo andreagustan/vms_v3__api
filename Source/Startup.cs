@@ -194,7 +194,10 @@ namespace VMS
             services.AddScoped<ICustomerDetail, CustomerDetailServices>();
             services.AddScoped<IVoucherDetail, VoucherDetailServices>();
             services.AddScoped<IPriceListVoucher, PriceListVoucherServices>();
+            services.AddScoped<IView, ViewServices>();
+            services.AddScoped<IT_PO, T_POServices>();
             #endregion
+
 
             #region Service WCF
             services.AddScoped<ISoapSSO, SoapSSOServices>();

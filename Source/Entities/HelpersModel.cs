@@ -147,4 +147,16 @@ namespace VMS.Entities
 
         public TokenExt Detail { get; }
     }
+
+    public class ListCombo
+    {
+        public string Code { get; set; }
+        public string Search { get; set; }
+        public int? Page { get; set; }
+        public int? Size { get; set; }
+        public string OrderBy { get; set; }
+        public string UserId { get; set; }
+        public string FilterData { get; set; }
+        //public string request { get; set; }
+    }
 }
