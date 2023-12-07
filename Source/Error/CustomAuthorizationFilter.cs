@@ -53,7 +53,13 @@ namespace VMS.Error
                 }
                 else
                 {
-                    RqString = context.HttpContext.Request.Headers["Authorization"].ToString();
+                    foreach (var item in context.HttpContext.Request.Headers["Authorization"].ToString().Split(" "))
+                    {
+                        if (item.ToLower().IndexOf("bearer") == -1) {
+                            RqString = "Bearer " + item;
+                        }
+                    }
+                    //RqString = context.HttpContext.Request.Headers["Authorization"].ToString();
                 }
 
                 //var Rq = context.HttpContext.Request.Headers["Authorization"].ToString().Split(" ");

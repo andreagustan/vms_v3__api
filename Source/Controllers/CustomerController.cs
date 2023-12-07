@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace VMS.Controllers
 {
-    public partial class CustomerController : BaseApiController
+    public partial class M_CustomerController : BaseApiController
     {
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ namespace VMS.Controllers
         private readonly ISoapSSO _soapSSOws;
         private readonly ICustomer _Customer;
 
-        public CustomerController(IRepository repository, IMapper mapper, IAppsLog appsLog, IHelpers helpers, ISoapSSO soapSSOws, ICustomer Customer)
+        public M_CustomerController(IRepository repository, IMapper mapper, IAppsLog appsLog, IHelpers helpers, ISoapSSO soapSSOws, ICustomer Customer)
         {
             _repository = repository;
             _mapper = mapper;
@@ -47,7 +47,7 @@ namespace VMS.Controllers
                 }
                 else
                 {
-                    return Requests.Response(this, new ApiStatus(500), null, Rs.Message);
+                    return Requests.Response(this, new ApiStatus(500), Rs.Result, Rs.Message);
                 }
 
             }

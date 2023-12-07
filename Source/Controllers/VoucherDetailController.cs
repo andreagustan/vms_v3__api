@@ -78,7 +78,7 @@ namespace VMS.Controllers
                 var GridLimit = request.GridRequest();
                 if (GridLimit != null)
                     Items.PageSize = GridLimit.offset.ToString();
-
+                                
                 var Rs = await _voucherDetail.ListObject(Items);
                 if (!Rs.Status)
                 {

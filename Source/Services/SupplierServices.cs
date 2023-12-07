@@ -61,7 +61,8 @@ namespace VMS.Services
 
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
-                    return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
+                    //return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
+                    return (false, Rs.ToList().FirstOrDefault(), null);
                 }
                 else
                 {

@@ -43,7 +43,7 @@ namespace VMS.Controllers
                 if (Rs.Status) {
                     return Ok(Rs.Result);
                 } else {
-                    return Requests.Response(this, new ApiStatus(500), null, Rs.Message);
+                    return Requests.Response(this, new ApiStatus(500), Rs.Result, Rs.Message);
                 }
                 
             }
