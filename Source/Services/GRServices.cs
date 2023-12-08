@@ -88,52 +88,87 @@ namespace VMS.Services
             }
         }
 
-        public async Task<(bool Status, object Result, string Message)> BulkUpdate(T_GRRequest Items) 
+        //public async Task<(bool Status, object Result, string Message)> BulkUpdate(T_GRRequest Items) 
+        //{
+        //    try
+        //    {
+        //        DataSet ds = new DataSet();
+        //        if (Items.DataDetail == null || Items.DataDetail.Count == 0)
+        //        {
+        //            ds = GetGRDetailDS();
+        //        }
+        //        else
+        //        {
+        //            ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Items.DataDetail)));
+        //        }
+
+        //        var p = new DynamicParameters();
+        //        p.Add("@GRNo", Items.GRNo);
+        //        p.Add("@GRDate", Items.GRDate);
+        //        p.Add("@SupplierID", Items.SupplierID);
+        //        p.Add("@SupplierName", Items.SupplierName);
+        //        p.Add("@BranchID", Items.BranchID);
+        //        p.Add("@BranchName", Items.BranchName);
+        //        p.Add("@PONo", Items.PONo);
+        //        p.Add("@PODate", Items.PODate);
+        //        p.Add("@RefNo", Items.RefNo);
+        //        p.Add("@DeliveryBy", Items.DeliveryBy);
+        //        p.Add("@VehicleNo", Items.VehicleNo);
+        //        p.Add("@ReceiveBy", Items.ReceiveBy);
+        //        p.Add("@Remark", Items.Remark);
+        //        p.Add("@TotalTransaction", Items.TotalTransaction);
+        //        p.Add("@DiscRate", Items.DiscRate);
+        //        p.Add("@DiscAmount", Items.DiscAmount);
+        //        p.Add("@DiscAmount1", Items.DiscAmount1);
+        //        p.Add("@TaxRate", Items.TaxRate);
+        //        p.Add("@TaxAmount", Items.TaxAmount);
+        //        p.Add("@FinalTotal", Items.FinalTotal);
+        //        p.Add("@StsActive", Items.StsActive);
+        //        p.Add("@StsPReturn", Items.StsPReturn);
+        //        p.Add("@StsPInv", Items.StsPInv);
+        //        p.Add("@StsPosted", Items.StsPosted);
+        //        p.Add("@UserId", Items.EntryUser);
+        //        p.Add("@SLocID", Items.SLocID);
+        //        p.Add("@ReturnTypeId", Items.ReturnTypeId);
+        //        p.Add("@Source", Items.Source);
+        //        p.Add("@dt", ds.Tables[0].AsTableValuedParameter("tT_GRDetail"));
+
+        //        var Rs = await repository.executeProcedure<object>("pT_GR_Bulk", p);
+
+        //        if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
+        //        {
+        //            //return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
+        //            return (false, Rs.ToList().FirstOrDefault(), null);
+        //        }
+        //        else
+        //        {
+        //            var Data = new CommonsResponse
+        //            {
+        //                Status = true,
+        //                Message = ConstValue.StatusOK,
+        //                CurrPage = 1,
+        //                TotalPage = 0,
+        //                TotalRecords = 0,
+        //                //Data = Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim(),
+        //                Data = Rs.ToList().FirstOrDefault(),
+        //            };
+
+        //            return (true, Data, null);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return (false, null, "Trouble happened! \n " + ex.Message);
+        //    }
+        //}
+        public async Task<(bool Status, object Result, string Message)> BulkUpdate(T_GRRequest Items)
         {
             try
             {
-                DataSet ds = new DataSet();
-                if (Items.DataDetail == null || Items.DataDetail.Count == 0)
-                {
-                    ds = GetGRDetailDS();
-                }
-                else
-                {
-                    ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Items.DataDetail)));
-                }
-
                 var p = new DynamicParameters();
-                p.Add("@GRNo", Items.GRNo);
-                p.Add("@GRDate", Items.GRDate);
-                p.Add("@SupplierID", Items.SupplierID);
-                p.Add("@SupplierName", Items.SupplierName);
-                p.Add("@BranchID", Items.BranchID);
-                p.Add("@BranchName", Items.BranchName);
-                p.Add("@PONo", Items.PONo);
-                p.Add("@PODate", Items.PODate);
-                p.Add("@RefNo", Items.RefNo);
-                p.Add("@DeliveryBy", Items.DeliveryBy);
-                p.Add("@VehicleNo", Items.VehicleNo);
-                p.Add("@ReceiveBy", Items.ReceiveBy);
-                p.Add("@Remark", Items.Remark);
-                p.Add("@TotalTransaction", Items.TotalTransaction);
-                p.Add("@DiscRate", Items.DiscRate);
-                p.Add("@DiscAmount", Items.DiscAmount);
-                p.Add("@DiscAmount1", Items.DiscAmount1);
-                p.Add("@TaxRate", Items.TaxRate);
-                p.Add("@TaxAmount", Items.TaxAmount);
-                p.Add("@FinalTotal", Items.FinalTotal);
-                p.Add("@StsActive", Items.StsActive);
-                p.Add("@StsPReturn", Items.StsPReturn);
-                p.Add("@StsPInv", Items.StsPInv);
-                p.Add("@StsPosted", Items.StsPosted);
-                p.Add("@UserId", Items.EntryUser);
-                p.Add("@SLocID", Items.SLocID);
-                p.Add("@ReturnTypeId", Items.ReturnTypeId);
-                p.Add("@Source", Items.Source);
-                p.Add("@dt", ds.Tables[0].AsTableValuedParameter("tT_GRDetail"));
+                p.Add("@formData", JsonConvert.SerializeObject(Items));
 
-                var Rs = await repository.executeProcedure<object>("pT_GR_Bulk", p);
+                var Rs = await repository.executeProcedure<object>("pT_GR_Bulk_json", p);
 
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {

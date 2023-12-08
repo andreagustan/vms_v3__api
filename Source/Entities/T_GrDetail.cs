@@ -21,6 +21,7 @@ namespace VMS.Entities
         public string? SLocID { get; set; }
         public string? ExpireDate { get; set; }
         public int? ppn { get; set; }
+        public float? QtyPo { get; set; }
 
     }
 }

@@ -40,6 +40,8 @@ namespace VMS.Entities
         public string? SLocID { get; set; }
         public int? ReturnTypeId { get; set; }
         public string? Source { get; set; }
+        public string? mode { get; set; }
+        public string? userlogin { get; set; }
         public List<T_GRDetailRequest> DataDetail { get; set; }
     }
 }

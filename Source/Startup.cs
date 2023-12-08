@@ -210,6 +210,7 @@ namespace VMS
             services.AddScoped<IPriceListVoucher, PriceListVoucherServices>();
             services.AddScoped<IView, ViewServices>();
             services.AddScoped<IT_PO, T_POServices>();
+            services.AddScoped<IM_PriceList, M_PriceListServices>();
             #endregion
 
 
