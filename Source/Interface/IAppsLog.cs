@@ -9,6 +9,6 @@ namespace VMS.Interface
     public interface IAppsLog
     {
         void WriteAppsLog(LogsDto Items);
-        Task<(bool Status, string Id, string Message)> WriteAppLog(LogsDto Items);
+        Task<(bool Status, string Id, string Message)> WriteAppsLogAsync(LogsDto Items);
     }
 }

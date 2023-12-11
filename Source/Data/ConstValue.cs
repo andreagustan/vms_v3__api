@@ -7,6 +7,11 @@ namespace VMS.Data
 {
     public class ConstValue
     {
+        public const string LogInformation = "Information";
+        public const string LogError = "Error";
+        public const string LogAdd = "Add";
+        public const string LogEdit = "Update";
+        
         public const string StatusOK = "OK";
         public const string NotFound = "Data Not Found";
 

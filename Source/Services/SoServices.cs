@@ -63,7 +63,7 @@ namespace VMS.Services
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
                     //return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
-                    return (false, Rs.ToList().FirstOrDefault() ,null);
+                    return (false, Rs.FirstOrDefault() ,null);
                 }
                 else
                 {
@@ -132,7 +132,7 @@ namespace VMS.Services
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
                     //return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
-                    return (false, Rs.ToList().FirstOrDefault(), null);
+                    return (false, Rs.FirstOrDefault(), null);
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace VMS.Services
                         TotalPage = 0,
                         TotalRecords = 0,
                         //Data = Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim(),
-                        Data = Rs.ToList().FirstOrDefault(),
+                        Data = Rs.FirstOrDefault(),
                     };
 
                     return (true, Data, null);

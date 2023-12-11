@@ -62,13 +62,13 @@ namespace VMS.Controllers
                     { "FlagData", "Detail" },
                     { "Id", id },
                 };
-
+                                
                 var Rs = _repository.ExecSPToList<SystemLogsList>("ProcCRUDSystemLogs", param);
 
                 return Requests.Response(this, new ApiStatus(200), Rs, "");
             }
             catch (Exception ex)
-            {
+            {                
                 return Requests.Response(this, new ApiStatus(500), null, ex.Message);
             }
         }

@@ -54,7 +54,7 @@ namespace VMS.Services
             }
         }
 
-        public async Task<(bool Status, string Id, string Message)> WriteAppLog(LogsDto Items)
+        public async Task<(bool Status, string Id, string Message)> WriteAppsLogAsync(LogsDto Items)
         {
             string RsMsg = "";
             try

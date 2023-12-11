@@ -62,16 +62,23 @@ namespace VMS.Services
                 if (!string.IsNullOrEmpty(Items.JSONFilter)) p.Add("@JsonFilter", Items.JSONFilter);
 
                 var Rs = await repository.executeProcedure<object>("ProcCRUDPriceListVoucher", p);
-
-                var Data = new
+                if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
-                    recordsTotal = p.Get<int>("totalrecords"),
-                    recordsFilter = p.Get<int>("totalrecordFilter"),
-                    data = Rs.ToList(),
+                    return (false, Rs.FirstOrDefault(), null);
+                }
+                else
+                {
+                    var Data = new
+                    {
+                        recordsTotal = p.Get<int>("totalrecords"),
+                        recordsFilter = p.Get<int>("totalrecordFilter"),
+                        data = Rs.ToList(),
 
-                };
+                    };
 
-                return (true, Data, null);
+                    return (true, Data, null);
+                }
+                
             }
             catch (Exception ex)
             {

@@ -40,8 +40,15 @@ namespace VMS.Services
                 if (!string.IsNullOrEmpty(Items.JSONFilter)) p.Add("@JsonFilter", Items.JSONFilter);
 
                 var Rs = await repository.executeProcedure<VoucherDetail>("ProcCRUDVoucherDetail", p);
-
-                return (true, Rs.ToList(), null);
+                if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
+                {
+                    return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
+                }
+                else
+                {
+                    return (true, Rs.ToList(), null);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -62,16 +69,23 @@ namespace VMS.Services
                 if (!string.IsNullOrEmpty(Items.JSONFilter)) p.Add("@JsonFilter", Items.JSONFilter);
 
                 var Rs = await repository.executeProcedure<object>("ProcCRUDVoucherDetail", p);
-
-                var Data = new
+                if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
-                    recordsTotal = p.Get<int>("totalrecords"),
-                    recordsFilter = p.Get<int>("totalrecordFilter"),
-                    data = Rs.ToList(),
+                    return (false, Rs.FirstOrDefault(), null);
+                }
+                else
+                {
+                    var Data = new
+                    {
+                        recordsTotal = p.Get<int>("totalrecords"),
+                        recordsFilter = p.Get<int>("totalrecordFilter"),
+                        data = Rs.ToList(),
 
-                };
+                    };
 
-                return (true, Data, null);
+                    return (true, Data, null);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -91,8 +105,9 @@ namespace VMS.Services
                 p.Add("@totalrecordFilter", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 var Rs = (await repository.executeProcedure<VoucherDetail>("ProcCRUDVoucherDetail", p)).FirstOrDefault();
-
+                
                 return (true, Rs, null);
+
             }
             catch (Exception ex)
             {
@@ -113,6 +128,7 @@ namespace VMS.Services
                 var Rs = (await repository.executeProcedure<object>("ProcCRUDVoucherDetail", p)).FirstOrDefault();
 
                 return (true, Rs, null);
+                
             }
             catch (Exception ex)
             {
@@ -138,7 +154,7 @@ namespace VMS.Services
                 };
 
                 var Rs = await Task.Run(() => repository.ExecSPToDataTable("ProcCRUDVoucherDetail", param));
-
+                
                 return (true, Rs.Rows[0].ItemArray[0].ToString(), null);
             }
             catch (Exception ex)
@@ -165,8 +181,9 @@ namespace VMS.Services
                 };
 
                 var Rs = await Task.Run(() => repository.ExecSPToDataTable("ProcCRUDVoucherDetail", param));
-
+               
                 return (true, Rs.Rows[0].ItemArray[0].ToString(), null);
+
             }
             catch (Exception ex)
             {
@@ -195,8 +212,9 @@ namespace VMS.Services
                 };
 
                 var Rs = await Task.Run(() => repository.ExecSPToDataTable("ProcCRUDVoucherDetail", param));
-
+                
                 return (true, Rs.Rows[0].ItemArray[0].ToString(), null);
+
             }
             catch (Exception ex)
             {
@@ -219,8 +237,9 @@ namespace VMS.Services
                 };
 
                 var Rs = await Task.Run(() => repository.ExecSPToDataTable("ProcCRUDVoucherDetail", param));
-
+                
                 return (true, Rs.Rows[0].ItemArray[0].ToString(), null);
+
             }
             catch (Exception ex)
             {

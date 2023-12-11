@@ -7,4 +7,4 @@ build_property.PublishSingleFile =
 build_property.IncludeAllContentForSelfExtract = 
 build_property._SupportedPlatformList = Android,iOS,Linux,macOS,Windows
 build_property.RootNamespace = VMS
-build_property.ProjectDir = D:\Pertamina\source\API\GIT\HUB\VMS_V3__API\Source\
+build_property.ProjectDir = D:\Pertamina\source\API\GIT\HUB\vms_v3__api\Source\

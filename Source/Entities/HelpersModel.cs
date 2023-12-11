@@ -51,7 +51,7 @@ namespace VMS.Entities
 
     public class LogsDto
     {
-        public bool Status { get; set; }
+        //public bool Status { get; set; }
         public string FlagData { get; set; }
         public string? Id { get; set; }
         public string? Description { get; set; }

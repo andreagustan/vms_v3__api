@@ -58,12 +58,12 @@ namespace VMS.Services
                     p.Add("@PageNumber", "0");
                 }
 
-                var Rs = await repository.executeProcedure<object>("pM_Salesman_View", p);
+                var Rs = await repository.executeProcedure<object>("pI_Item_View", p);
 
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
                     //return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
-                    return (false, Rs.ToList().FirstOrDefault(), null);
+                    return (false, Rs.FirstOrDefault(), null);
                 }
                 else
                 {
@@ -101,7 +101,7 @@ namespace VMS.Services
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
                     //return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
-                    return (false, Rs.ToList().FirstOrDefault(),null);
+                    return (false, Rs.FirstOrDefault(),null);
                 }
                 else
                 {
@@ -181,7 +181,7 @@ namespace VMS.Services
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
                     //return (false, null, Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim());
-                    return (false, Rs.ToList().FirstOrDefault(), null);
+                    return (false, Rs.FirstOrDefault(), null);
                 }
                 else
                 {

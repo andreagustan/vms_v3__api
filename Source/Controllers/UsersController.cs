@@ -40,18 +40,36 @@ namespace VMS.Controllers
             bool Authenticated = false;
             string Message = "";
             Object Result = "";
+            var DtLog = new LogsDto();
+            DtLog.Action = Request.Method;
+            DtLog.Module = Request.Path;
+            DtLog.StatusLog = ConstValue.LogInformation;
             try
             {
+                DtLog.Description =_soapSSOws.GetType().Name;
+                DtLog.Request = StringHelpers.PrepareJsonstring(Items);
+                DtLog.FlagData = ConstValue.LogAdd;
+                var RsLog = await _appsLog.WriteAppsLogAsync(DtLog);
+                DtLog.Id = !RsLog.Status ? "0" : RsLog.Id;
+                DtLog.FlagData = ConstValue.LogEdit;
+
                 var Rs = await _soapSSOws.GetValidasiUser(Items);
                 if (Rs.Status && Rs.Data.Body.ValidateUserResult)
                 {
                     (Authenticated, Result, Message) = await _user.AuthenticateAsync(Items);
                     if (Authenticated)
                     {
+                        DtLog.Response = StringHelpers.PrepareJsonstring(Result);
+                        _appsLog.WriteAppsLog(DtLog);
+
                         return Requests.Response(this, new ApiStatus(200), Result, Message);
                     }
                     else
                     {
+                        DtLog.ErrorLog = StringHelpers.PrepareJsonstring(new { Detail = Message });
+                        DtLog.StatusLog = ConstValue.LogError;
+                        _appsLog.WriteAppsLog(DtLog);
+
                         return Requests.Response(this, new ApiStatus(400), Result, Message);
                     }
                 }
@@ -63,6 +81,11 @@ namespace VMS.Controllers
             }
             catch (Exception ex)
             {
+                DtLog.ErrorLog = StringHelpers.PrepareJsonstring(new { Detail = ex.Message });
+                DtLog.StatusLog = ConstValue.LogError;
+                DtLog.FlagData = ConstValue.LogEdit;
+                _appsLog.WriteAppsLog(DtLog);
+
                 return Requests.Response(this, new ApiStatus(500), null, ex.Message);
             }
         }
