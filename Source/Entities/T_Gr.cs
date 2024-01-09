@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,7 +40,9 @@ namespace VMS.Entities
         public string? EntryUser { get; set; }
         public string? SLocID { get; set; }
         public int? ReturnTypeId { get; set; }
-        public string? Source { get; set; }
+        public bool JSONProcess { get; set; }
+        [Required]
+        public string mode { get; set; }
         public List<T_GRDetailRequest> DataDetail { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace VMS.Interface
     public interface IDo
     {
         Task<(bool Status, object Result, string Message)> ListObject(ListPageExt Items);
+        Task<(bool Status, RsList Result, string Message)> ListObjectExt(ListPageExt Items);
         Task<(bool Status, object Result, string Message)> BulkUpdate(T_DORequest Items);
     }
 }

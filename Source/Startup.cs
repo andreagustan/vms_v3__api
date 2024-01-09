@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json.Serialization;
 
 namespace VMS
 {
@@ -131,6 +132,7 @@ namespace VMS
             services.AddControllers().AddNewtonsoftJson(o =>
             {
                 o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                o.SerializerSettings.ContractResolver = null;
             });
 
             // configure strongly typed settings objects
@@ -209,6 +211,14 @@ namespace VMS
             services.AddScoped<IVoucherDetail, VoucherDetailServices>();
             services.AddScoped<IPriceListVoucher, PriceListVoucherServices>();
             services.AddScoped<IView, ViewServices>();
+            services.AddScoped<IT_waste, T_wasteServices>();
+            services.AddScoped<IT_wasteDetail, T_wasteDetailServices>();
+            services.AddScoped<IT_ReturnList, T_ReturnListServices>();
+            services.AddScoped<IT_ReturnListDetail, T_ReturnListDetailServices>();
+            services.AddScoped<IT_SalesReturn, T_SalesReturnServices>();
+            services.AddScoped<IT_SalesReturnDetail, T_SalesReturnDetailServices>();
+            services.AddScoped<IT_PurchaseReturn, T_PurchaseReturnServices>();
+            services.AddScoped<IT_PurchaseReturnDetail, T_PurchaseReturnDetailServices>();
             services.AddScoped<IT_PO, T_POServices>();
             #endregion
 
@@ -218,7 +228,7 @@ namespace VMS
             #endregion
 
             services.AddRazorPages();
-
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "VMS", Version = "v3" });

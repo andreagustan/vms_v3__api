@@ -40,11 +40,27 @@ namespace VMS.Controllers
         public async Task<IActionResult> GetListPage([FromQuery] ListPageExt Items)
         {
             var DtLog = new LogsDto();
+            DtLog.UserId = GetUserId();
             DtLog.Action = Request.Method;
             DtLog.Module = Request.Path;
             DtLog.StatusLog = ConstValue.LogInformation;
             try
             {
+                var GridLimit = Items.request.QueryBuilder();
+
+                if (GridLimit != null)
+                {
+                    Items.Size = GridLimit.Offset == "0" ? GridLimit.Limit.ToInt() : GridLimit.Offset.ToInt();
+                }
+                else
+                {
+                    Items.Size = "100".ToInt();
+                }
+                Items.Page ??= "0".ToInt();
+
+                Items.OrderBy ??= ""; Items.OrderBy = Items.OrderBy.Trim();
+                Items.Search ??= ""; Items.Search = Items.Search.Trim();
+
                 DtLog.Description = "pT_PermintaanBarangDetail_View";
                 DtLog.Request = StringHelpers.PrepareJsonstring(Items);
                 DtLog.FlagData = ConstValue.LogAdd;
@@ -52,7 +68,7 @@ namespace VMS.Controllers
                 DtLog.Id = !RsLog.Status ? "0" : RsLog.Id;
                 DtLog.FlagData = ConstValue.LogEdit;
 
-                var Rs = await _T_PermintaanBarangDetail.ListObject(Items);
+                var Rs = await _T_PermintaanBarangDetail.ListObjectExt(Items);
                 if (Rs.Status)
                 {
                     DtLog.Response = StringHelpers.PrepareJsonstring(Rs.Result);

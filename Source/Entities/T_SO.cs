@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace VMS.Entities
     public class T_SO_Bulk
     {
         public T_SO_Bulk() {
-            dataDetail = new List<T_SODetailRequest>();
+            DataDetail = new List<T_SODetailRequest>();
         }
 
         public string? soNo { get; set; }
@@ -32,8 +33,11 @@ namespace VMS.Entities
         public int? stsActive { get; set; }
         public int? stsPosted { get; set; }
         public string? entryUser { get; set; }
-        public string? Source { get; set; }
-        public List<T_SODetailRequest> dataDetail { get; set; }
+        //public string? Source { get; set; }
+        public bool JSONProcess { get; set; }
+        [Required]
+        public string mode { get; set; }
+        public List<T_SODetailRequest> DataDetail { get; set; }
 
 
     }

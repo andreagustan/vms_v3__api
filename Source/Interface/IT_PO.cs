@@ -9,6 +9,8 @@ namespace VMS.Interface
     public interface IT_PO
     {
         Task<(bool Status, object Result, string Message)> ListObject(ListPageExt Items);
+        Task<(bool Status, RsList Result, string Message)> ListObjectExt(ListPageExt Items);
+        Task<(bool Status, RsList Result, string Message)> ListDetailObjectExt(ListPageExt Items);
         Task<(bool Status, object Result, string Message)> ListDetailObject(ListPageExt Items);
         Task<(bool Status, object Result, string Message)> BulkUpdate(T_PO Items);
 

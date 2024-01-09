@@ -9,7 +9,7 @@ namespace VMS.Interface
     public interface IPriceListVoucher
     {
         Task<(bool Status, List<MPriceListVoucher> Result, string Message)> List(ListPageDetail Items);
-        Task<(bool Status, object Result, string Message)> ListObject(ListPageDetail Items);
+        Task<(bool Status, RsList Result, string Message)> ListObject(ListPageExt Items);
         Task<(bool Status, MPriceListVoucher Result, string Message)> DetailId(long Id);
         Task<(bool Status, object Result, string Message)> DetailIdExt(long Id);
         Task<(bool Status, string Result, string Message)> Add(string CurrentUserId, MPriceListVoucherExt Items);

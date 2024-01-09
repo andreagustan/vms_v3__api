@@ -49,34 +49,52 @@ namespace VMS.Services
             }
         }
 
-        public async Task<(bool Status, object Result, string Message)> ListObject(ListPageDetail Items)
+        public async Task<(bool Status, RsList Result, string Message)> ListObject(ListPageExt Items)
         {
             try
             {
                 var p = new DynamicParameters();
-                p.Add("@totalrecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                p.Add("@totalrecordFilter", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                p.Add("@PageSize", Items.PageSize);
-                p.Add("@PageNumber", Items.PageNumber ?? "0");
-                if (!string.IsNullOrEmpty(Items.KeyHeader)) p.Add("@KeyHeader", Items.KeyHeader);
-                if (!string.IsNullOrEmpty(Items.JSONFilter)) p.Add("@JsonFilter", Items.JSONFilter);
+                p.Add("@TotalRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                p.Add("@TotalPage", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                //p.Add("@PageSize", Items.PageSize);
+                p.Add("@PageSize", Items.Size);
+                //p.Add("@PageNumber", Items.PageNumber ?? "0");
+                p.Add("@PageNumber", Items.Page);
+                p.Add("@UserId", Items.UserId);
+                if (Items.OrderBy!="") p.Add("@OrderBy", Items.OrderBy);
+                if (Items.Search!="") p.Add("@KeyWord", Items.Search);
+                //if (!string.IsNullOrEmpty(Items.KeyHeader)) p.Add("@KeyHeader", Items.KeyHeader);
+                //if (!string.IsNullOrEmpty(Items.JSONFilter)) p.Add("@JsonFilter", Items.JSONFilter);
 
-                var Rs = await repository.executeProcedure<object>("ProcCRUDPriceListVoucher", p);
+                //var Rs = await repository.executeProcedure<object>("ProcCRUDPriceListVoucher", p);
+                var Rs = await repository.executeProcedure<object>("pM_PriceListVoucher_View", p);
+
+                var DataRs = new RsList();
+
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
-                    return (false, Rs.FirstOrDefault(), null);
+                    DataRs.TotalRecords = 0;
+                    DataRs.TotalPage = 0;
+                    DataRs.Data = Rs.FirstOrDefault();
+                    //return (false, Rs.FirstOrDefault(), null);
+                    return (false, DataRs, null);
                 }
                 else
                 {
-                    var Data = new
-                    {
-                        recordsTotal = p.Get<int>("totalrecords"),
-                        recordsFilter = p.Get<int>("totalrecordFilter"),
-                        data = Rs.ToList(),
+                    //var Data = new
+                    //{
+                    //    TotalRecords = p.Get<int>("TotalRecords"),
+                    //    TotalPage = p.Get<int>("TotalPage"),
+                    //    Data = Rs.ToList(),
 
-                    };
+                    //};
 
-                    return (true, Data, null);
+                    //return (true, Data, null);
+                    DataRs.TotalRecords = p.Get<int>("TotalRecords");
+                    DataRs.TotalPage = p.Get<int>("TotalPage");
+                    DataRs.PageSize = p.Get<int>("PageSize");
+                    DataRs.Data = Rs.ToList();
+                    return (true, DataRs, null);
                 }
                 
             }

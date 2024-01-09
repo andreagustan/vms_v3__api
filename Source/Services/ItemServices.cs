@@ -46,19 +46,23 @@ namespace VMS.Services
                 if (!string.IsNullOrEmpty(Items.Search)) p.Add("@KeyWord", Items.Search);
                 if (!string.IsNullOrEmpty(Items.OrderBy)) p.Add("@OrderBy", Items.OrderBy);
 
-                var GridLimit = Items.request.GridRequest();
+                var GridLimit = Items.request.QueryBuilder();
                 if (GridLimit != null)
                 {
-                    p.Add("@PageSize", GridLimit.offset.ToString());
+                    p.Add("@PageSize", GridLimit.Offset=="0"? GridLimit.Limit:GridLimit.Offset);
+                    //p.Add("@PageSize", GridLimit.Offset.ToString());
                     p.Add("@PageNumber", "0");
                 }
                 else
                 {
-                    p.Add("@PageSize", Items.Size == null ? "100" : Items.Size.ToString());
+                    p.Add("@PageSize",  Items.Size == null ? "100" : Items.Size.ToString());
                     p.Add("@PageNumber", "0");
                 }
 
+                //var Rs = await repository.executeProcedure<object>("pI_Item_View", p);
                 var Rs = await repository.executeProcedure<object>("pI_Item_View", p);
+                Double TotalRows = Convert.ToDouble(Rs.Select(s => (IDictionary<string, object>)s).FirstOrDefault()["totalrows"]);
+                Double PageSize = Convert.ToDouble(Items.Size == null ? "100" : Items.Size.ToString());
 
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {
@@ -72,8 +76,10 @@ namespace VMS.Services
                         Status = true,
                         Message = ConstValue.StatusOK,
                         CurrPage = 1,
-                        TotalPage = p.Get<int>("TotalPage"),
-                        TotalRecords = p.Get<int>("totalrecords"),
+                        //TotalPage = p.Get<int>("TotalPage"),
+                        //TotalRecords = p.Get<int>("totalrecords"),
+                        TotalPage = Convert.ToInt64(Math.Ceiling(TotalRows / PageSize)),
+                        TotalRecords = Convert.ToInt64(TotalRows),
                         Data = Rs.ToList(),
                     };
 
@@ -87,7 +93,44 @@ namespace VMS.Services
                 return (false, null, "Trouble happened! \n " + ex.Message);
             }
         }
+        public async Task<(bool Status, RsList Result, string Message)> ListObjectExt(ListPageExt Items)
+        {
+            try
+            {
+                var p = new DynamicParameters();
+                p.Add("@TotalRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                p.Add("@TotalPage", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                p.Add("@PageSize", Items.Size);
+                p.Add("@PageNumber", Items.Page);
+                p.Add("@UserId", Items.UserId);
+                if (Items.OrderBy != "") p.Add("@OrderBy", Items.OrderBy);
+                if (Items.Search != "") p.Add("@KeyWord", Items.Search);
+                var Rs = await repository.executeProcedure<object>("pI_Item_View", p);
 
+                var DataRs = new RsList();
+
+                if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
+                {
+                    DataRs.TotalRecords = 0;
+                    DataRs.TotalPage = 0;
+                    DataRs.Data = Rs.FirstOrDefault();
+                    return (false, DataRs, null);
+                }
+                else
+                {
+                    DataRs.TotalRecords = p.Get<int>("TotalRecords");
+                    DataRs.TotalPage = p.Get<int>("TotalPage");
+                    DataRs.PageSize = p.Get<int>("PageSize");
+                    DataRs.Data = Rs.ToList();
+                    return (true, DataRs, null);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return (false, null, "Trouble happened! \n" + ex.Message);
+            }
+        }
         public async Task<(bool Status, object Result, string Message)> DeleteById(CommonDelete Items) 
         {
             try
@@ -112,7 +155,8 @@ namespace VMS.Services
                         CurrPage = 1,
                         TotalPage = 0,
                         TotalRecords = 0,
-                        Data = Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim(),
+                        //Data = Rs.FirstOrDefault().ToString().Split("=")[1].Replace("'", "").Replace("}", "").Trim(),
+                        Data = Rs.FirstOrDefault(),
                     };
 
                     return (true, Data, null);
@@ -128,55 +172,66 @@ namespace VMS.Services
         {
             try
             {
-                DataSet ds = new DataSet();
-                if (Items.dataUOM == null || Items.dataUOM.Count == 0) {
-                    ds = GetItemUnit();
-                }
-                else {
-                    ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Items.dataUOM)));
-                }
-
+                string NameSp = "";
                 var p = new DynamicParameters();
-                p.Add("@ItemId", Items.dataItem.ItemId);
-                p.Add("@ItemName", Items.dataItem.ItemName);
-                p.Add("@ItemStructName", Items.dataItem.ItemStructName);
-                p.Add("@CategoryId", Items.dataItem.CategoryId);
-                p.Add("@ItemType", Items.dataItem.ItemType);
-                p.Add("@Barcode1", Items.dataItem.Barcode1);
-                p.Add("@Barcode2", Items.dataItem.Barcode2);
-                p.Add("@Barcode3", Items.dataItem.Barcode3);
-                p.Add("@Active", Items.dataItem.Active);
-                p.Add("@BOM", Items.dataItem.BOM);
-                p.Add("@BaseUOM", Items.dataItem.BaseUOM);
-                p.Add("@QtyMultiplyOrder", Items.dataItem.QtyMultiplyOrder);
-                p.Add("@OpenPrice", Items.dataItem.OpenPrice);
-                p.Add("@Konversi", Items.dataItem.Konversi);
-                p.Add("@PPN", Items.dataItem.PPN);
-                p.Add("@StatusItem", Items.dataItem.StatusItem);
-                p.Add("@Point", Items.dataItem.Point);
                 p.Add("@UserId", Items.EntryUser);
-                p.Add("@OldItemId", Items.dataItem.OldItemId);
-                p.Add("@UOMOrder", Items.dataItem.UOMOrder);
-                p.Add("@MainSupplierId", Items.dataItem.MainSupplierId);
-                p.Add("@StsSO", Items.dataItem.StsSO);
-                p.Add("@StsPO", Items.dataItem.StsPO);
-                p.Add("@FlagRetur", Items.dataItem.FlagRetur);
-                p.Add("@FlagTukarGuling", Items.dataItem.FlagTukarGuling);
-                p.Add("@FlagBKL", Items.dataItem.FlagBKL);
-                p.Add("@KodeTag", Items.dataItem.KodeTag);
-                p.Add("@idDivisi", Items.dataItem.idDivisi);
-                p.Add("@idDepartement", Items.dataItem.idDepartement);
-                p.Add("@idSubDepartement", Items.dataItem.idSubDepartement);
-                p.Add("@idKategori", Items.dataItem.idKategori);
-                p.Add("@ClassId", Items.dataItem.ClassId);
-                p.Add("@idPajak", Items.dataItem.idPajak);
-                p.Add("@idJenisProduk", Items.dataItem.idJenisProduk);
-                p.Add("@idKemasan", Items.dataItem.idKemasan);
-                p.Add("@RetDay", Items.dataItem.RetDay);
-                p.Add("@itemUnit", ds.Tables[0].AsTableValuedParameter("tI_ItemUnit"));
-                //p.Add("@itemUnit", ds.Tables[0]);
 
-                var Rs = await repository.executeProcedure<object>("pI_Item_Bulk", p);
+                if (Items.JSONProcess) {
+                    NameSp = "pI_Item_Bulk_json";
+                    p.Add("@formdata", StringHelpers.PrepareJsonstring(Items));
+                } 
+                else {
+                    DataSet ds = new DataSet();
+                    if (Items.DataDetail == null || Items.DataDetail.Count == 0)
+                    {
+                        ds = GetItemUnit();
+                    }
+                    else
+                    {
+                        ds.Tables.Add(JsonConvert.DeserializeObject<DataTable>(JsonConvert.SerializeObject(Items.DataDetail)));
+                    }
+
+                    p.Add("@ItemId", Items.ItemId);
+                    p.Add("@ItemName", Items.ItemName);
+                    p.Add("@ItemStructName", Items.ItemStructName);
+                    p.Add("@CategoryId", Items.CategoryId);
+                    p.Add("@ItemType", Items.ItemType);
+                    p.Add("@Barcode1", Items.Barcode1);
+                    p.Add("@Barcode2", Items.Barcode2);
+                    p.Add("@Barcode3", Items.Barcode3);
+                    p.Add("@Active", Items.Active);
+                    p.Add("@BOM", Items.BOM);
+                    p.Add("@BaseUOM", Items.BaseUOM);
+                    p.Add("@QtyMultiplyOrder", Items.QtyMultiplyOrder);
+                    p.Add("@OpenPrice", Items.OpenPrice);
+                    p.Add("@Konversi", Items.Konversi);
+                    p.Add("@PPN", Items.PPN);
+                    p.Add("@StatusItem", Items.StatusItem);
+                    p.Add("@Point", Items.Point);
+                    p.Add("@OldItemId", Items.OldItemId);
+                    p.Add("@UOMOrder", Items.UOMOrder);
+                    p.Add("@MainSupplierId", Items.MainSupplierId);
+                    p.Add("@StsSO", Items.StsSO);
+                    p.Add("@StsPO", Items.StsPO);
+                    p.Add("@FlagRetur", Items.FlagRetur);
+                    p.Add("@FlagTukarGuling", Items.FlagTukarGuling);
+                    p.Add("@FlagBKL", Items.FlagBKL);
+                    p.Add("@KodeTag", Items.KodeTag);
+                    p.Add("@idDivisi", Items.idDivisi);
+                    p.Add("@idDepartement", Items.idDepartement);
+                    p.Add("@idSubDepartement", Items.idSubDepartement);
+                    p.Add("@idKategori", Items.idKategori);
+                    p.Add("@ClassId", Items.ClassId);
+                    p.Add("@idPajak", Items.idPajak);
+                    p.Add("@idJenisProduk", Items.idJenisProduk);
+                    p.Add("@idKemasan", Items.idKemasan);
+                    p.Add("@RetDay", Items.RetDay);
+                    p.Add("@itemUnit", ds.Tables[0].AsTableValuedParameter("tI_ItemUnit"));
+                    //p.Add("@itemUnit", ds.Tables[0]);
+                    NameSp = "pI_Item_Bulk";
+                }
+
+                var Rs = await repository.executeProcedure<object>(NameSp, p);
 
                 if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
                 {

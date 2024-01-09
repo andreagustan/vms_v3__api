@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,16 +9,9 @@ namespace VMS.Entities
     public class I_ItemBulk_Request
     {
 		public I_ItemBulk_Request() {
-			dataUOM = new List<I_ItemUnitRequest>();
+			DataDetail = new List<I_ItemUnitRequest>();
 		}
 
-        public string EntryUser { get; set; }
-        public I_ItemRequest dataItem { get; set; }
-        public List<I_ItemUnitRequest> dataUOM { get; set; }
-    }
-
-	public class I_ItemRequest
-	{
 		public string ItemId { get; set; }
 		public string? ItemName { get; set; }
 		public string? ItemStructName { get; set; }
@@ -54,5 +48,10 @@ namespace VMS.Entities
 		public int? idJenisProduk { get; set; }
 		public int? idKemasan { get; set; }
 		public float? RetDay { get; set; }
-	}
+		public bool JSONProcess { get; set; }
+		[Required]
+		public string mode { get; set; }
+		public List<I_ItemUnitRequest> DataDetail { get; set; }
+    }
+
 }

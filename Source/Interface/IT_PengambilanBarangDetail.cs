@@ -9,5 +9,6 @@ namespace VMS.Interface
     public interface IT_PengambilanBarangDetail
     {
         Task<(bool Status, object Result, string Message)> ListObject(ListPageExt Items);
+        Task<(bool Status, RsList Result, string Message)> ListObjectExt(ListPageExt Items);
     }
 }

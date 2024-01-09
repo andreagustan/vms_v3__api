@@ -106,10 +106,36 @@ namespace VMS.Entities
         public string JSONFilter { get; set; }
     }
 
-    public class GridLimit
+    public class BaseRequestGridModel
     {
-        public long limit { get; set; }
-        public long offset { get; set; }
+        public string WhereClause { get; set; }
+        public string OrderBy { get; set; }
+        public string Size { get; set; }
+        public string Limit { get; set; }
+        public string Offset { get; set; }
+    }
+    public class GridRequest
+    {
+        public string cmd { get; set; }
+        public List<object> selected { get; set; }
+        public int limit { get; set; }
+        public int offset { get; set; }
+        public List<Search> search { get; set; }
+        public string searchLogic { get; set; }
+        public List<Sort> sort { get; set; }
+    }
+    public class Search
+    {
+        public string field { get; set; }
+        public string type { get; set; }
+        public string @operator { get; set; }
+        public object value { get; set; }
+        public object svalue { get; set; }
+    }
+    public class Sort
+    {
+        public string field { get; set; }
+        public string direction { get; set; }
     }
 
     public class ListParm
@@ -157,5 +183,13 @@ namespace VMS.Entities
         public string UserId { get; set; }
         public string FilterData { get; set; }
         //public string request { get; set; }
+    }
+
+    public class RsList 
+    {
+        public int TotalRecords { get; set; }
+        public int TotalPage { get; set; }
+        public int PageSize { get; set; }
+        public object Data { get; set; }
     }
 }

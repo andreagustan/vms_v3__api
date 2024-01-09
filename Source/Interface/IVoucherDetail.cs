@@ -10,6 +10,7 @@ namespace VMS.Interface
     {
         Task<(bool Status, List<VoucherDetail> Result, string Message)> List(ListPageDetail Items);
         Task<(bool Status, object Result, string Message)> ListObject(ListPageDetail Items);
+        Task<(bool Status, RsList Result, string Message)> ListObjectExt(ListPageExt Items);
         Task<(bool Status, VoucherDetail Result, string Message)> DetailId(long Id);
         Task<(bool Status, object Result, string Message)> DetailIdExt(long Id);
         Task<(bool Status, string Result, string Message)> Add(string CurrentUserId, VoucherDetailExt Items);

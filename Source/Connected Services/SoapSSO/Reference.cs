@@ -1630,11 +1630,13 @@ namespace SoapSSO
         {
             if ((endpointConfiguration == EndpointConfiguration.SSOWSSoap))
             {
-                return new System.ServiceModel.EndpointAddress("http://ptprkpapp04.ptpr.com:8092/SSOWS.asmx");
+                //return new System.ServiceModel.EndpointAddress("http://ptprkpapp04.ptpr.com:8092/SSOWS.asmx");
+                return new System.ServiceModel.EndpointAddress("http://sso.pertaminaretail.com/SSOWS.asmx");
             }
             if ((endpointConfiguration == EndpointConfiguration.SSOWSSoap12))
             {
-                return new System.ServiceModel.EndpointAddress("http://ptprkpapp04.ptpr.com:8092/SSOWS.asmx");
+                //return new System.ServiceModel.EndpointAddress("http://ptprkpapp04.ptpr.com:8092/SSOWS.asmx");
+                return new System.ServiceModel.EndpointAddress("http://sso.pertaminaretail.com/SSOWS.asmx");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

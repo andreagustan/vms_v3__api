@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,6 +26,9 @@ namespace VMS.Entities
         public DateTime? ExpireDate { get; set; }
         public int? StsTransfer { get; set; }
         //public string Source { get; set; }
+        public bool JSONProcess { get; set; }
+        [Required]
+        public string mode { get; set; }
         public List<T_PermintaanBarangDetailRequest> DataDetail { get; set; }
     }
 }

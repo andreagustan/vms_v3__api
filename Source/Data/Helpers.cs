@@ -16,6 +16,8 @@ using SoapSSO;
 using static SoapSSO.SSOWSSoapClient;
 using Newtonsoft.Json;
 using VMS.Entities;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace VMS.Data
 {
@@ -218,6 +220,10 @@ namespace VMS.Data
             return Convert.ToSingle(value);
         }
 
+        public static int ToInt(this string value) {
+            return Convert.ToInt32(value);
+        }
+
         public static string ToFormatIDStringDate(this DateTime? value)
         {
             if (value == null) return "";
@@ -267,11 +273,113 @@ namespace VMS.Data
                 new System.Globalization.CultureInfo("es-ES"));
         }
 
-        public static GridLimit GridRequest(this string value) 
+        public static BaseRequestGridModel QueryBuilder(this string request)
+        {
+            if (string.IsNullOrEmpty(request)) return null;
+
+            var config = JsonConvert.DeserializeObject<GridRequest>(request);
+            var result = new BaseRequestGridModel();
+            var whereClauses = new List<string>();
+            if (config.search == null || !config.search.Any())
+            {
+                result.WhereClause = string.Empty;
+            }
+            else
+            {
+                whereClauses = config.search
+                .Select(filter =>
+                    $"{GetColumnName(filter.field)} {GetOperator(filter.@operator, filter.value, filter.svalue)}")
+                .ToList();
+
+                result.WhereClause = "AND (" + string.Join($" {config.searchLogic} ", whereClauses) + ")";
+            }
+            var orderBy = config.sort != null ? $"ORDER BY {config.sort[0].field} {config.sort[0].direction}" : "";
+            var size = $"OFFSET {config.offset} ROWS FETCH NEXT {config.limit} ROWS ONLY;";
+
+            result.OrderBy = orderBy;
+            result.Size = size;
+            result.Limit = config.limit.ToString();
+            result.Offset = config.offset.ToString();
+
+            return result;
+        }
+
+        public static object ToFormatKeyReturn(this object? value)
         {
             if (value == null) return null;
-            return JsonConvert.DeserializeObject<GridLimit>(value);
-            
+
+            string serailizeddto = JsonConvert.SerializeObject(value, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver()
+                {
+                    NamingStrategy = new UpperCaseNamingStrategy
+                    {
+                        OverrideSpecifiedNames = true
+                    }
+                }
+            });
+
+            return JsonConvert.DeserializeObject(serailizeddto);
+
+        }
+
+        private static string GetColumnName(this string field)
+        {
+            return field;
+        }
+
+        private static string GetOperator(string operatorType, object value, object svalue)
+        {
+            var IData =new List<string>();
+            var TmpData = "";
+            switch (operatorType.ToLower())
+            {
+                case "is":
+                    return $" = '{value}'";
+                case "begins":
+                    return $" LIKE '{value}' + '%'";
+                case "contains":
+                    return $" LIKE '%' + '{value}' + '%'";
+                case "ends":
+                    return $" LIKE '%' + '{value}'";
+                case "more":
+                    return $" >= '{value}'";
+                case "less":
+                    return $" <= '{value}'";
+                case "between":
+                    var data = JsonConvert.DeserializeObject<List<string>>(value.ToString());
+                    return $" BETWEEN '{data[0] + " 00:00:01"}' AND '{data[1] + " 59:59:59"}'";
+                case "in":
+                    IData = JsonConvert.DeserializeObject<List<string>>(svalue.ToString());
+                    for (int i = 0; i < IData.Count; i++)
+                    {
+                        if (i == IData.Count - 1)
+                        {
+                            TmpData += $"'{IData[i]}'";
+                        }
+                        else
+                        {
+                            TmpData += $"'{IData[i]}', ";
+                        }
+
+                    }
+                    return $" in ({TmpData})";
+                case "not in":
+                    IData = JsonConvert.DeserializeObject<List<string>>(svalue.ToString());
+                    for (int i = 0; i < IData.Count; i++)
+                    {
+                        if (i == IData.Count - 1) {
+                            TmpData += $"'{i}'";
+                        } 
+                        else {
+                            TmpData += $"'{i}', ";
+                        }
+                        
+                    }
+                    return $" not in ({TmpData})";
+                default:
+                    throw new ArgumentException($"Unsupported operator: {operatorType}");
+            }
         }
     }
 
@@ -299,13 +407,21 @@ namespace VMS.Data
         }
 
     }
+    public class UpperCaseNamingStrategy : NamingStrategy
+    {
+        protected override string ResolvePropertyName(string name)
+        {
+            return name.FirstCharToUpper();
+        }
+    }
+
 
     public class Requests
     {
         internal static IActionResult Response(ControllerBase Controller, ApiStatus statusCode, object dataValue, string msg)
         {
             var e = new ApiStatus(500);
-
+              
             var _ = new
             {
                 status = e.StatusCode,
@@ -313,6 +429,7 @@ namespace VMS.Data
                 detail = "",
                 message = e.StatusDescription,
                 data = dataValue
+
 
             };
 
@@ -345,7 +462,7 @@ namespace VMS.Data
                 throw new Exception(msg);
             }
 
-            return Controller.StatusCode(statusCode.StatusCode, _);
+            return Controller.StatusCode(statusCode.StatusCode, _.ToFormatKeyReturn());
         }
     }
 
@@ -355,7 +472,7 @@ namespace VMS.Data
         {
             return JsonConvert.SerializeObject(item);
         }
-
+        
         public static bool IsDBNull(object str) => str == DBNull.Value;
 
         public static string ConvertString(object str)
@@ -381,7 +498,7 @@ namespace VMS.Data
         }
 
         public static string AddQuotedStr(string str)
-            => string.Format("'{0}'", str.Replace("'", "''")).Trim();
+            => str == null ? null:string.Format("{0}", str.Replace("'", "''")).Trim();
 
         public static string NumberFormat(string input)
             => NumberFormat(Convert.ToDouble(string.IsNullOrEmpty(input) ? "0" : input));

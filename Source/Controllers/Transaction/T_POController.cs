@@ -45,6 +45,21 @@ namespace VMS.Controllers
             DtLog.StatusLog = ConstValue.LogInformation;
             try
             {
+                var GridLimit = Items.request.QueryBuilder();
+
+                if (GridLimit != null)
+                {
+                    Items.Size = GridLimit.Offset == "0" ? GridLimit.Limit.ToInt() : GridLimit.Offset.ToInt();
+                }
+                else
+                {
+                    Items.Size = "100".ToInt();
+                }
+                Items.Page ??= "0".ToInt();
+
+                Items.OrderBy ??= ""; Items.OrderBy = Items.OrderBy.Trim();
+                Items.Search ??= ""; Items.Search = Items.Search.Trim();
+
                 DtLog.Description = "pT_PO_View";
                 DtLog.Request = StringHelpers.PrepareJsonstring(Items);
                 DtLog.FlagData = ConstValue.LogAdd;
@@ -52,7 +67,7 @@ namespace VMS.Controllers
                 DtLog.Id = !RsLog.Status ? "0" : RsLog.Id;
                 DtLog.FlagData = ConstValue.LogEdit;
 
-                var Rs = await _T_PO.ListObject(Items);
+                var Rs = await _T_PO.ListObjectExt(Items);
                 if (Rs.Status)
                 {
                     DtLog.Response = StringHelpers.PrepareJsonstring(Rs.Result);
@@ -91,14 +106,29 @@ namespace VMS.Controllers
             DtLog.StatusLog = ConstValue.LogInformation;
             try
             {
-                DtLog.Description = "pT_PO_View";
+                var GridLimit = Items.request.QueryBuilder();
+
+                if (GridLimit != null)
+                {
+                    Items.Size = GridLimit.Offset == "0" ? GridLimit.Limit.ToInt() : GridLimit.Offset.ToInt();
+                }
+                else
+                {
+                    Items.Size = "100".ToInt();
+                }
+                Items.Page ??= "0".ToInt();
+
+                Items.OrderBy ??= ""; Items.OrderBy = Items.OrderBy.Trim();
+                Items.Search ??= ""; Items.Search = Items.Search.Trim();
+
+                DtLog.Description = "pT_PODetail_View";
                 DtLog.Request = StringHelpers.PrepareJsonstring(Items);
                 DtLog.FlagData = ConstValue.LogAdd;
                 var RsLog = await _appsLog.WriteAppsLogAsync(DtLog);
                 DtLog.Id = !RsLog.Status ? "0" : RsLog.Id;
                 DtLog.FlagData = ConstValue.LogEdit;
 
-                var Rs = await _T_PO.ListDetailObject(Items);
+                var Rs = await _T_PO.ListDetailObjectExt(Items);
                 if (Rs.Status)
                 {
                     DtLog.Response = StringHelpers.PrepareJsonstring(Rs.Result);

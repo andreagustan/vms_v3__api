@@ -34,17 +34,48 @@ namespace VMS.Controllers
             _Item = Item;
         }
 
+        [HttpGet("testModelGridRequest")]
+        public async Task<IActionResult> Test(string request)
+        {
+            try
+            {
+                var GridOption = request.QueryBuilder();
+
+                return Ok(GridOption);
+            }
+            catch (Exception ex)
+            {
+                return Requests.Response(this, new ApiStatus(500), null, ex.Message);
+            }
+        }
+
         [TypeFilter(typeof(CustomAuthorizationFilter))]
         [Produces("application/json")]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetListPage([FromQuery] ListPageExt Items)
         {
             var DtLog = new LogsDto();
+            DtLog.UserId = GetUserId();
             DtLog.Action = Request.Method;
             DtLog.Module = Request.Path;
             DtLog.StatusLog = ConstValue.LogInformation;
             try
             {
+                var GridLimit = Items.request.QueryBuilder();
+
+                if (GridLimit != null)
+                {
+                    Items.Size = GridLimit.Offset == "0" ? GridLimit.Limit.ToInt() : GridLimit.Offset.ToInt();
+                }
+                else
+                {
+                    Items.Size = "100".ToInt();
+                }
+                Items.Page ??= "0".ToInt();
+
+                Items.OrderBy ??= ""; Items.OrderBy = Items.OrderBy.Trim();
+                Items.Search ??= ""; Items.Search = Items.Search.Trim();
+
                 DtLog.Description = "pI_Item_View";
                 DtLog.Request = StringHelpers.PrepareJsonstring(Items);
                 DtLog.FlagData = ConstValue.LogAdd;
@@ -52,7 +83,7 @@ namespace VMS.Controllers
                 DtLog.Id = !RsLog.Status ? "0" : RsLog.Id;
                 DtLog.FlagData = ConstValue.LogEdit;
 
-                var Rs = await _Item.ListObject(Items);
+                var Rs = await _Item.ListObjectExt(Items);
                 if (Rs.Status)
                 {
                     DtLog.Response = StringHelpers.PrepareJsonstring(Rs.Result);
@@ -84,16 +115,17 @@ namespace VMS.Controllers
         [TypeFilter(typeof(CustomAuthorizationFilter))]
         [Produces("application/json")]
         [HttpDelete("Delete")]
-        public async Task<IActionResult> Delete([FromBody] CommonDelete Items)
+        public async Task<IActionResult> Delete([FromQuery] CommonDelete Items)
         {
             var DtLog = new LogsDto();
+            DtLog.UserId = GetUserId();
             DtLog.Action = Request.Method;
             DtLog.Module = Request.Path;
             DtLog.StatusLog = ConstValue.LogInformation;
             try
             {
-                Items.UserId = GetUserId();
 
+                Items.UserId = GetUserId();
                 DtLog.Description = "pI_Item_Del";
                 DtLog.Request = StringHelpers.PrepareJsonstring(Items);
                 DtLog.FlagData = ConstValue.LogAdd;
@@ -136,6 +168,7 @@ namespace VMS.Controllers
         public async Task<IActionResult> BulkUpdate([FromBody] I_ItemBulk_Request Items)
         {
             var DtLog = new LogsDto();
+            DtLog.UserId = GetUserId();
             DtLog.Action = Request.Method;
             DtLog.Module = Request.Path;
             DtLog.StatusLog = ConstValue.LogInformation;
@@ -143,7 +176,13 @@ namespace VMS.Controllers
             {
                 Items.EntryUser = GetUserId();
 
-                DtLog.Description = "pI_Item_Bulk";
+                if (Items.JSONProcess) {
+                    DtLog.Description = "pI_Item_Bulk_JSON";
+                } 
+                else {
+                    DtLog.Description = "pI_Item_Bulk";
+                }
+                
                 DtLog.Request = StringHelpers.PrepareJsonstring(Items);
                 DtLog.FlagData = ConstValue.LogAdd;
                 var RsLog = await _appsLog.WriteAppsLogAsync(DtLog);

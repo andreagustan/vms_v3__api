@@ -45,10 +45,11 @@ namespace VMS.Services
                 if (!string.IsNullOrEmpty(Items.Search)) p.Add("@KeyWord", Items.Search);
                 if (!string.IsNullOrEmpty(Items.OrderBy)) p.Add("@OrderBy", Items.OrderBy);
 
-                var GridLimit = Items.request.GridRequest();
+                var GridLimit = Items.request.QueryBuilder();
                 if (GridLimit != null)
                 {
-                    p.Add("@PageSize", GridLimit.offset.ToString());
+                    //p.Add("@PageSize", GridLimit.Offset.ToString());
+                    p.Add("@PageSize", GridLimit.Offset == "0" ? GridLimit.Limit : GridLimit.Offset);
                     p.Add("@PageNumber", "0");
                 }
                 else
@@ -86,6 +87,43 @@ namespace VMS.Services
                 return (false, null, "Trouble happened! \n " + ex.Message);
             }
         }
+        public async Task<(bool Status, RsList Result, string Message)> ListObjectExt(ListPageExt Items)
+        {
+            try
+            {
+                var p = new DynamicParameters();
+                p.Add("@TotalRecords", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                p.Add("@TotalPage", dbType: DbType.Int32, direction: ParameterDirection.Output);
+                p.Add("@PageSize", Items.Size);
+                p.Add("@PageNumber", Items.Page);
+                p.Add("@UserId", Items.UserId);
+                if (Items.OrderBy != "") p.Add("@OrderBy", Items.OrderBy);
+                if (Items.Search != "") p.Add("@KeyWord", Items.Search);
+                var Rs = await repository.executeProcedure<object>("pT_PengambilanBarangDetail_View", p);
 
+                var DataRs = new RsList();
+
+                if (Rs.ToList().Where(w => w.ToString().Contains("Err")).Count() != 0)
+                {
+                    DataRs.TotalRecords = 0;
+                    DataRs.TotalPage = 0;
+                    DataRs.Data = Rs.FirstOrDefault();
+                    return (false, DataRs, null);
+                }
+                else
+                {
+                    DataRs.TotalRecords = p.Get<int>("TotalRecords");
+                    DataRs.TotalPage = p.Get<int>("TotalPage");
+                    DataRs.PageSize = p.Get<int>("PageSize");
+                    DataRs.Data = Rs.ToList();
+                    return (true, DataRs, null);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return (false, null, "Trouble happened! \n" + ex.Message);
+            }
+        }
     }
 }

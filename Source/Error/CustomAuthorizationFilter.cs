@@ -63,6 +63,14 @@ namespace VMS.Error
                 }
 
                 //var Rq = context.HttpContext.Request.Headers["Authorization"].ToString().Split(" ");
+                if (RqString == "") {
+                    context.Result = CreateUnauthorized(new TokenExt {                         
+                        Message="Token invalid.",
+                        Token=context.HttpContext.Request.Headers["Authorization"].ToString() });
+
+                    return;
+                }
+
                 var Rq = RqString.Split(" ");
                 var Rs = _helpers.GetPolicy(Rq[1].ToString()).ConfigureAwait(false).GetAwaiter().GetResult();
                 if (Rs.Status)

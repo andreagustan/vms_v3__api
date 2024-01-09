@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VMS.Data;
 
 namespace VMS.Services
 {
@@ -21,12 +22,7 @@ namespace VMS.Services
             this.logger = _logger;
 
         }
-
-        public JObject PrepareData(object item)
-        {
-            return JsonConvert.DeserializeObject<JObject>(JsonConvert.SerializeObject(item));
-        }
-
+        
         public void WriteAppsLog(LogsDto Items) 
         {
             try
@@ -35,13 +31,13 @@ namespace VMS.Services
                 { 
                     { "FlagData", Items.FlagData }, 
                     { "Id", Items.Id }, 
-                    { "Description", Items.Description }, 
+                    { "Description", StringHelpers.AddQuotedStr(Items.Description) }, 
                     { "Module", Items.Module }, 
                     { "Action", Items.Action }, 
-                    { "Request", Items.Request }, 
-                    { "Response", Items.Response }, 
-                    { "Note", Items.Note },                 
-                    { "ErrorLog", Items.ErrorLog },                 
+                    { "Request", StringHelpers.AddQuotedStr(Items.Request) }, 
+                    { "Response", StringHelpers.AddQuotedStr(Items.Response) }, 
+                    { "Note", StringHelpers.AddQuotedStr(Items.Note) },                 
+                    { "ErrorLog", StringHelpers.AddQuotedStr(Items.ErrorLog) },                 
                     { "StatusLog", Items.StatusLog },                 
                     { "UserId", Items.UserId }             
                 };
@@ -63,13 +59,13 @@ namespace VMS.Services
                 {
                     { "FlagData", Items.FlagData },
                     { "Id", Items.Id },
-                    { "Description", Items.Description },
+                    { "Description", StringHelpers.AddQuotedStr(Items.Description) },
                     { "Module", Items.Module },
                     { "Action", Items.Action },
-                    { "Request", Items.Request },
-                    { "Response", Items.Response },
-                    { "Note", Items.Note },
-                    { "ErrorLog", Items.ErrorLog },
+                    { "Request", StringHelpers.AddQuotedStr(Items.Request) },
+                    { "Response", StringHelpers.AddQuotedStr(Items.Response) },
+                    { "Note", StringHelpers.AddQuotedStr(Items.Note) },
+                    { "ErrorLog", StringHelpers.AddQuotedStr(Items.ErrorLog) },
                     { "StatusLog", Items.StatusLog },
                     { "UserId", Items.UserId }
                 };

@@ -41,6 +41,7 @@ namespace VMS.Controllers
             string Message = "";
             Object Result = "";
             var DtLog = new LogsDto();
+            DtLog.UserId = GetUserId();
             DtLog.Action = Request.Method;
             DtLog.Module = Request.Path;
             DtLog.StatusLog = ConstValue.LogInformation;
